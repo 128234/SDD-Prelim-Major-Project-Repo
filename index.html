@@ -7,6 +7,37 @@
     <title>Group Generator</title>
 </head>
 <body>
-    
+    <div id='page1' class='pages'>
+        <h1>Group Generator</h1>
+        <button onclick="goToPage(page2)">Begin</button>
+      </div>
+      
+      <div id='page2' class='pages'>
+        <h1>Group Generator</h1>
+        <button onclick="goToPage(page3)">+Add new group</button>
+        <p>Existing Groups</p>
+      </div>
+      
+      <div id='page3' class='pages'>
+        <h1>Group Generator</h1>
+        
+        <table id="studentListTable">
+        <tr>
+          <th>Given Name</th>
+          <th>Last Name</th> 
+          <th>Rank</th>
+        </tr>
+        <tr>
+          <td><input type="text"></td>
+          <td><input type="text"></td> 
+          <td><input type="text"></td>
+        </tr>
+      </table>
+        <button onclick="addNewStudent()">+Add new student</button>
+        <br>
+        <br>
+        <button onclick="x()">Save</button>
+        <p>Existing Groups</p>
+      </div>
 </body>
 </html>
