@@ -12,10 +12,11 @@ function goToPage(page) {
 }
 
 //This function will add a new row to the table for the user to enter
-var studentID = -1; //useless
+//var studentID = -1; //useless
 function addNewStudent() {
-  studentID += 1; //useless
+  //studentID += 1; //useless
   row = document.getElementById("studentListTable").insertRow(-1);
+  
   cell0 = row.insertCell(0);
   cell1 = row.insertCell(1);
   cell2 = row.insertCell(2);
@@ -25,9 +26,9 @@ function addNewStudent() {
   inputElement1 = document.createElement("input");
   inputElement2 = document.createElement("input");
   //Useless code
-  inputElement0.id = "fName" + studentID.toString();
-  inputElement1.id = "sName" + studentID.toString();
-  inputElement2.id = "rank" + studentID.toString();
+  //inputElement0.id = "fName" + studentID.toString();
+  //inputElement1.id = "sName" + studentID.toString();
+  //inputElement2.id = "rank" + studentID.toString();
   //End of useless code
   cell0.appendChild(inputElement0);
   cell1.appendChild(inputElement1);
@@ -40,7 +41,7 @@ function removeLastStudent() {
   }
 }
 
-
+//This function will save the list of students that the user entered into an array
 function saveClass() {
   table = document.getElementById("studentListTable");
   for (r = 1; r < table.rows.length; r++) {
@@ -53,4 +54,18 @@ function saveClass() {
     chosenClassArray.push(studentDetailsObject);
     //}
   }
+}
+
+
+function createTable() {
+  for(i=0;i<chosenClassArray.length;i++) {
+    row = document.getElementById("studentListTableDisplay").insertRow(-1);
+  cell0 = row.insertCell(0);
+  cell1 = row.insertCell(1);
+  cell2 = row.insertCell(2);
+cell0.innerHTML = chosenClassArray[i].firstName
+    cell1.innerHTML = chosenClassArray[i].lastName
+    cell2.innerHTML = chosenClassArray[i].rank
+  }
+  
 }

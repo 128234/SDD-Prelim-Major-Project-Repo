@@ -7,38 +7,53 @@
     <title>Group Generator</title>
 </head>
 <body>
-    <div id='page1' class='pages'>
-        <h1>Group Generator</h1>
-        <button onclick="goToPage(page2)">Begin</button>
-      </div>
-      
-      <div id='page2' class='pages'>
-        <h1>Group Generator</h1>
-        <button onclick="goToPage(page3)">+Add new group</button>
-        <p>Existing Groups</p>
-      </div>
-      
-      <div id='page3' class='pages'>
-        <h1>Group Generator</h1>
-        
-        <table id="studentListTable">
-        <tr>
-          <th>Given Name</th>
-          <th>Last Name</th> 
-          <th>Rank</th>
-        </tr>
-        <tr>
-          <td><input type="text"></td>
-          <td><input type="text"></td> 
-          <td><input type="text"></td>
-        </tr>
-      </table>
-        <button onclick="addNewStudent()">+Add new student</button>
-        <br>
-        <br>
-        <button onclick="x()">Save</button>
-        <p>Existing Groups</p>
-      </div>
+  <div id='page1' class='pages'>
+    <h1>Group Generator</h1>
+    <button onclick="goToPage(page2)">Begin</button>
+  </div>
+  
+  <div id='page2' class='pages'>
+    <h1>Group Generator - Page 2</h1>
+    <button onclick="goToPage(page3);addNewStudent()">+Add new group</button>
+    <p>Existing Groups</p>
+  </div>
+  
+  <div id='page3' class='pages'>
+    <h1>Group Generator - Page 3</h1>
+    
+    <table id="studentListTable">
+    <tr>
+      <th>Given Name</th>
+      <th>Last Name</th> 
+      <th>Rank</th>
+    </tr>
+  </table>
+    <button onclick="addNewStudent()">+Add new student</button>
+    <button onclick="removeLastStudent()">Remove last student</button>
+    <br>
+    <br>
+    <button onclick="saveClass();goToPage(page4);createTable()">Save</button>
+    <p>Existing Groups</p>
+  </div>
+  
+  <div id='page4' class='pages'>
+    <h1>Group Generator - Page 4</h1>
+    <table id="studentListTableDisplay">
+    <tr>
+      <th>Given Name</th>
+      <th>Last Name</th> 
+      <th>Rank</th>
+    </tr>
+  </table>
+    
+    <p>How would you like to sort your class?</p>
+    //Radio buttons dO!!!!!!
+    <form action="">
+    <input type="radio"><label>Sort class into <input type="text"> groups</label>
+    <input type="radio"><label>Sort class into groups with <input type="text"> members</label>
+      </form>
+    
+  </div>
       <script src="script.js"></script>
     </body>
 </html>
