@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Group Generator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
   <div id='page1' class='pages'>
@@ -47,13 +48,15 @@
   </table>
     
     <p>How would you like to sort your class?</p>
-    //Radio buttons dO!!!!!!
     <form action="">
-    <input type="radio"><label>Sort class into <input type="text"> groups</label>
-    <input type="radio"><label>Sort class into groups with <input type="text"> members</label>
+    <input type="radio" name="groups" id="byGroupsBtn" checked="checked"><label>Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
+      <br>
+    <input type="radio" name="groups" id="byStudentsBtn"><label>Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
       </form>
-    
+    <p id="classDivideFeedback"></p>
   </div>
+
+
       <script src="script.js"></script>
     </body>
 </html>
