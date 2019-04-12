@@ -172,22 +172,53 @@ function divideClass() {
             " students.";
         }
       }
-    } else if (isItByStudentsBtn == true) {
+      //Bottom radio button selected
+    }
+    else if (isItByStudentsBtn == true) {
       if (chosenClassArray.length % numOfStudents == 0) {
         numOfGroups = chosenClassArray.length / numOfStudents;
         document.getElementById("numGroupsInput").value = numOfGroups;
-      }
-    }
-    /*classDivideFeedback.innerHTML =
+        
+        classDivideFeedback.innerHTML =
     "The class will be split into " +
     numOfGroups +
     " groups, containing " +
     numOfStudents +
-    " students.";*/
+    " students.";
+        
+      } else { 
+         if (chosenClassArray.length < numOfStudents) {
+          classDivideFeedback.innerHTML =
+            "The values provided are unable to generate a group as there are not enough students in the class.";
+        } else {
+          //SPLIT INTO UNEQUAL GROUPS
+          numOfRemainingStudents = chosenClassArray.length % numOfStudents
+          ;
+          numOfGroups = Math.ceil(chosenClassArray.length/numOfStudents);
+
+          classDivideFeedback.innerHTML =
+            "Due to the parameters entered, the class cannot be equally distributed into " +
+            numOfGroups +
+            " groups. <br/>" +
+            "Here is a possible alternative: " +
+            "<br/>";
+          classDivideFeedback.innerHTML +=
+            "The class can be split into " +
+            (numOfGroups - 1) +
+            " group(s) containing " +
+            numOfStudents +
+            " student(s) and 1 group containing " +
+            numOfRemainingStudents +
+            " students.";
+        }
+      }
+      }
+    }
+    /**/
     //alert(byStudentsButton.checked.value)
     //if(chosenClassArray.length%)
   }
-}
+
 
 //PAGE4 - Disable other input box when typing
 function disableInputBox() {
@@ -199,12 +230,37 @@ function disableInputBox() {
   if (isItByGroupsBtn) {
     document.getElementById("numGroupsInput").disabled = false;
     document.getElementById("numStudentsInput").disabled = true;
+    document.getElementById("numStudentsInput").value = "";
     document.getElementById("byGroupsLabel").style.color = "black";
     document.getElementById("byStudentsLabel").style.color = "darkgray";
   } else {
     document.getElementById("numStudentsInput").disabled = false;
     document.getElementById("numGroupsInput").disabled = true;
+    document.getElementById("numGroupsInput").value = "";
     document.getElementById("byGroupsLabel").style.color = "darkgray";
     document.getElementById("byStudentsLabel").style.color = "black";
   }
+}
+
+
+//Function to randomly group students - uses selection sort
+function randomiseArray(array) {
+  arrRandomNumber = [];
+  sortArray = array.reverse();
+  sortedArray = [];
+  for (i = 0; i < array.length; i++) {
+    arrRandomNumber.push(Math.random());
+  }
+  while (sortedArray.length <= array.length) {
+    max = 0;
+    for (i = 0; i < arrRandomNumber.length; i++) {
+      if (arrRandomNumber[i] > arrRandomNumber[max]) {
+        max = i;
+      }
+    }
+    sortedArray.push(array[max]);
+    arrRandomNumber[max] = 0;
+  }
+  sortedArray.pop();
+  return sortedArray;
 }
