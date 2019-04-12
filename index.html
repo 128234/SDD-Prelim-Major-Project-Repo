@@ -8,53 +8,57 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <div id='page1' class='pages'>
-    <h1>Group Generator</h1>
-    <button onclick="goToPage(page2)">Begin</button>
-  </div>
-  
-  <div id='page2' class='pages'>
-    <h1>Group Generator - Page 2</h1>
-    <button onclick="goToPage(page3);addNewStudent()">+Add new group</button>
-    <p>Existing Groups</p>
-  </div>
-  
-  <div id='page3' class='pages'>
-    <h1>Group Generator - Page 3</h1>
-    
-    <table id="studentListTable">
+  <!--Page 1: Title Page-->
+<div id='page1' class='pages'>
+  <h1>Group Generator</h1>
+  <button onclick="goToPage(page2)">Begin</button>
+</div>
+
+<!--Page 2: Access existing classes or add new class-->
+<div id='page2' class='pages'>
+  <h1>Group Generator - Page 2</h1>
+  <button onclick="goToPage(page3);addNewStudent()">+Add new group</button>
+  <p>Existing Groups</p>
+</div>
+
+<!--Page 3: Enter students' details page-->
+<div id='page3' class='pages'>
+  <h1>Group Generator - Page 3</h1>
+
+  <table id="studentListTable">
     <tr>
       <th>Given Name</th>
-      <th>Last Name</th> 
+      <th>Last Name</th>
       <th>Rank</th>
     </tr>
   </table>
-    <button onclick="addNewStudent()">+Add new student</button>
-    <button onclick="removeLastStudent()">Remove last student</button>
-    <br>
-    <br>
-    <button onclick="saveClass();goToPage(page4);createTable()">Save</button>
-    <p>Existing Groups</p>
-  </div>
-  
-  <div id='page4' class='pages'>
-    <h1>Group Generator - Page 4</h1>
-    <table id="studentListTableDisplay">
+  <button onclick="addNewStudent()">+Add new student</button>
+  <button onclick="removeLastStudent()">Remove last student</button>
+  <br>
+  <br>
+  <button onclick="saveClass();goToPage(page4);createTable();disableInputBox()">Save</button>
+  <p>Existing Groups</p>
+</div>
+
+<!--Page 4: Displays students in class and will preview group sizes-->
+<div id='page4' class='pages'>
+  <h1>Group Generator - Page 4</h1>
+  <table id="studentListTableDisplay">
     <tr>
       <th>Given Name</th>
-      <th>Last Name</th> 
+      <th>Last Name</th>
       <th>Rank</th>
     </tr>
   </table>
-    
-    <p>How would you like to sort your class?</p>
-    <form action="">
-    <input type="radio" name="groups" id="byGroupsBtn" checked="checked"><label>Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
-      <br>
-    <input type="radio" name="groups" id="byStudentsBtn"><label>Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
-      </form>
-    <p id="classDivideFeedback"></p>
-  </div>
+
+  <p>How would you like to sort your class?</p>
+  <form action="">
+    <input type="radio" name="groups" id="byGroupsBtn" checked="checked"  onclick="disableInputBox()"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
+    <br>
+    <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
+  </form>
+  <p id="classDivideFeedback"></p>
+</div>
 
 
       <script src="script.js"></script>
