@@ -16,7 +16,7 @@ function goToPage(page) {
 }
 
 //PAGE3 - This function will add a new row to the table for the user to enter
-//var studentID = -1; //useless
+//var studentID = -1; //useless at the moment
 function addNewStudent() {
   //studentID += 1; //useless
   //Creates a new row and splits it into 3 cells
@@ -29,7 +29,7 @@ function addNewStudent() {
   inputElement0 = document.createElement("input");
   inputElement1 = document.createElement("input");
   inputElement2 = document.createElement("input");
-  /*Useless code
+  /*Useless code for now
   inputElement0.id = "fName" + studentID.toString();
   inputElement1.id = "sName" + studentID.toString();
   inputElement2.id = "rank" + studentID.toString();
@@ -50,17 +50,42 @@ function removeLastStudent() {
 function saveClass() {
   table = document.getElementById("studentListTable");
   //Iterates through the table and appends value in the cell to an object
-  for (r = 1; r < table.rows.length; r++) {
-    //for (c = 0, m = table.rows[r].cells.length; c < m; c++) {
-    studentDetailsObject = {
-      firstName: table.rows[r].cells[0].childNodes[0].value,
-      lastName: table.rows[r].cells[1].childNodes[0].value,
-      rank: table.rows[r].cells[2].childNodes[0].value
-    };
-    //The object is pushed into the class array
-    chosenClassArray.push(studentDetailsObject);
-    //}
+  isFilled = checkTableFilled(table)
+  if(!isFilled){
+    alert("Please fill all cells");
+        chosenClassArray = [];
+        return;
   }
+  
+  for (r = 1; r < table.rows.length; r++) {
+      studentDetailsObject = {
+        firstName: table.rows[r].cells[0].childNodes[0].value,
+        lastName: table.rows[r].cells[1].childNodes[0].value,
+        rank: table.rows[r].cells[2].childNodes[0].value
+      };
+      //The object is pushed into the class array
+      chosenClassArray.push(studentDetailsObject);
+      //
+    }
+    goToPage(page4);
+    createTable();
+    disableInputBox();
+  }
+
+//Used in the saveClass function to check if all cells are entered
+function checkTableFilled(table) {
+  checkFilled = true
+  for (r = 1; r < table.rows.length; r++) {
+    for (c = 0; c < table.rows[r].cells.length; c++) {
+      if (table.rows[r].cells[c].childNodes[0].value == "" ) {
+        table.rows[r].cells[c].style.backgroundColor = "red"
+        checkFilled = false
+    } else {
+      table.rows[r].cells[c].style.backgroundColor = "white"
+    }
+    }
+  }
+  return checkFilled;
 }
 
 //PAGE4 - This will create a table to be display the students entered into the array
@@ -91,7 +116,10 @@ function divideClass() {
   numOfRemainingGroups = 0;
 
   //This if statement will clear the output when the user changes the input
-  if ((numOfGroups == 0 && isItByGroupsBtn == true) || (numOfStudents == 0 && isItByStudentsBtn == true)) {
+  if (
+    (numOfGroups == 0 && isItByGroupsBtn == true) ||
+    (numOfStudents == 0 && isItByStudentsBtn == true)
+  ) {
     classDivideFeedback.innerHTML = "";
   } else {
     //Case when the top radio button has been selected
@@ -108,7 +136,7 @@ function divideClass() {
           " groups containing " +
           numOfStudents +
           " students.";
-        
+
         //Case when an equal number of students per group is impossible
       } else {
         if (chosenClassArray.length < numOfGroups) {
@@ -161,27 +189,22 @@ function divideClass() {
   }
 }
 
-
-
 //PAGE4 - Disable other input box when typing
 function disableInputBox() {
   //Booleans to show which radio button is selected
   isItByGroupsBtn = $("#byGroupsBtn").prop("checked");
   isItByStudentsBtn = $("#byStudentsBtn").prop("checked");
-  
-  //This will disable the other input box when that radio button is selected
-  if(isItByGroupsBtn) {
 
-    document.getElementById('numGroupsInput').disabled = false;
-    document.getElementById('numStudentsInput').disabled = true;
+  //This will disable the other input box when that radio button is selected
+  if (isItByGroupsBtn) {
+    document.getElementById("numGroupsInput").disabled = false;
+    document.getElementById("numStudentsInput").disabled = true;
     document.getElementById("byGroupsLabel").style.color = "black";
     document.getElementById("byStudentsLabel").style.color = "darkgray";
   } else {
-
-    document.getElementById('numStudentsInput').disabled = false;
-    document.getElementById('numGroupsInput').disabled = true;
+    document.getElementById("numStudentsInput").disabled = false;
+    document.getElementById("numGroupsInput").disabled = true;
     document.getElementById("byGroupsLabel").style.color = "darkgray";
     document.getElementById("byStudentsLabel").style.color = "black";
   }
- 
 }
