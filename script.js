@@ -41,7 +41,7 @@ function addNewStudent() {
 
 //This function deletes the last row of the input table
 function removeLastStudent() {
-  if (document.getElementById("studentListTable").rows.length > 1) {
+  if (document.getElementById("studentListTable").rows.length > 2) {
     document.getElementById("studentListTable").deleteRow(-1);
   }
 }
@@ -50,39 +50,39 @@ function removeLastStudent() {
 function saveClass() {
   table = document.getElementById("studentListTable");
   //Iterates through the table and appends value in the cell to an object
-  isFilled = checkTableFilled(table)
-  if(!isFilled){
+  isFilled = checkTableFilled(table);
+  if (!isFilled) {
     alert("Please fill all cells");
-        chosenClassArray = [];
-        return;
-  }
-  
-  for (r = 1; r < table.rows.length; r++) {
-      studentDetailsObject = {
-        firstName: table.rows[r].cells[0].childNodes[0].value,
-        lastName: table.rows[r].cells[1].childNodes[0].value,
-        rank: table.rows[r].cells[2].childNodes[0].value
-      };
-      //The object is pushed into the class array
-      chosenClassArray.push(studentDetailsObject);
-      //
-    }
-    goToPage(page4);
-    createTable();
-    disableInputBox();
+    chosenClassArray = [];
+    return;
   }
 
-//Used in the saveClass function to check if all cells are entered
+  for (r = 1; r < table.rows.length; r++) {
+    studentDetailsObject = {
+      firstName: table.rows[r].cells[0].childNodes[0].value,
+      lastName: table.rows[r].cells[1].childNodes[0].value,
+      rank: table.rows[r].cells[2].childNodes[0].value
+    };
+    //The object is pushed into the class array
+    chosenClassArray.push(studentDetailsObject);
+    //
+  }
+  goToPage(page4);
+  createTable();
+  disableInputBox();
+}
+
+//PAGE3 - Used in the saveClass function to check if all cells are entered
 function checkTableFilled(table) {
-  checkFilled = true
+  checkFilled = true;
   for (r = 1; r < table.rows.length; r++) {
     for (c = 0; c < table.rows[r].cells.length; c++) {
-      if (table.rows[r].cells[c].childNodes[0].value == "" ) {
-        table.rows[r].cells[c].style.backgroundColor = "red"
-        checkFilled = false
-    } else {
-      table.rows[r].cells[c].style.backgroundColor = "white"
-    }
+      if (table.rows[r].cells[c].childNodes[0].value == "") {
+        table.rows[r].cells[c].style.backgroundColor = "red";
+        checkFilled = false;
+      } else {
+        table.rows[r].cells[c].style.backgroundColor = "white";
+      }
     }
   }
   return checkFilled;
@@ -121,6 +121,8 @@ function divideClass() {
     (numOfStudents == 0 && isItByStudentsBtn == true)
   ) {
     classDivideFeedback.innerHTML = "";
+    document.getElementById("numGroupsInput").value = "";
+    document.getElementById("numStudentsInput").value = "";
   } else {
     //Case when the top radio button has been selected
     if (isItByGroupsBtn == true) {
@@ -173,28 +175,25 @@ function divideClass() {
         }
       }
       //Bottom radio button selected
-    }
-    else if (isItByStudentsBtn == true) {
+    } else if (isItByStudentsBtn == true) {
       if (chosenClassArray.length % numOfStudents == 0) {
         numOfGroups = chosenClassArray.length / numOfStudents;
         document.getElementById("numGroupsInput").value = numOfGroups;
-        
+
         classDivideFeedback.innerHTML =
-    "The class will be split into " +
-    numOfGroups +
-    " groups, containing " +
-    numOfStudents +
-    " students.";
-        
-      } else { 
-         if (chosenClassArray.length < numOfStudents) {
+          "The class will be split into " +
+          numOfGroups +
+          " groups, containing " +
+          numOfStudents +
+          " students.";
+      } else {
+        if (chosenClassArray.length < numOfStudents) {
           classDivideFeedback.innerHTML =
             "The values provided are unable to generate a group as there are not enough students in the class.";
         } else {
           //SPLIT INTO UNEQUAL GROUPS
-          numOfRemainingStudents = chosenClassArray.length % numOfStudents
-          ;
-          numOfGroups = Math.ceil(chosenClassArray.length/numOfStudents);
+          numOfRemainingStudents = chosenClassArray.length % numOfStudents;
+          numOfGroups = Math.ceil(chosenClassArray.length / numOfStudents);
 
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
@@ -212,13 +211,12 @@ function divideClass() {
             " students.";
         }
       }
-      }
     }
-    /**/
-    //alert(byStudentsButton.checked.value)
-    //if(chosenClassArray.length%)
   }
-
+  /**/
+  //alert(byStudentsButton.checked.value)
+  //if(chosenClassArray.length%)
+}
 
 //PAGE4 - Disable other input box when typing
 function disableInputBox() {
@@ -227,21 +225,22 @@ function disableInputBox() {
   isItByStudentsBtn = $("#byStudentsBtn").prop("checked");
 
   //This will disable the other input box when that radio button is selected
-  if (isItByGroupsBtn) {
+  if (isItByGroupsBtn == true) {
     document.getElementById("numGroupsInput").disabled = false;
     document.getElementById("numStudentsInput").disabled = true;
-    document.getElementById("numStudentsInput").value = "";
     document.getElementById("byGroupsLabel").style.color = "black";
     document.getElementById("byStudentsLabel").style.color = "darkgray";
   } else {
     document.getElementById("numStudentsInput").disabled = false;
     document.getElementById("numGroupsInput").disabled = true;
-    document.getElementById("numGroupsInput").value = "";
     document.getElementById("byGroupsLabel").style.color = "darkgray";
     document.getElementById("byStudentsLabel").style.color = "black";
   }
-}
 
+  classDivideFeedback.innerHTML = "";
+  document.getElementById("numGroupsInput").value = "";
+  document.getElementById("numStudentsInput").value = "";
+}
 
 //Function to randomly group students - uses selection sort
 function randomiseArray(array) {
