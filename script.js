@@ -160,7 +160,7 @@ function divideClass() {
           classDivideFeedback.innerHTML =
             "The values provided are unable to generate a group as there are more groups than students.";
         } else {
-          //SPLIT INTO UNEQUAL GROUPS
+          //Will split the class into as equal as possible groups
           numOfRemainingStudents = Math.ceil(
             chosenClassArray.length / numOfGroups
           );
@@ -171,22 +171,52 @@ function divideClass() {
           }
           numOfStudents = numOfStudents / (numOfGroups - numOfRemainingGroups);
 
+          //Will display output back to user
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
             numOfGroups +
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
-          classDivideFeedback.innerHTML +=
-            "The class can be split into " +
-            (numOfGroups - numOfRemainingGroups) +
-            " group(s) containing " +
-            numOfStudents +
-            " student(s) and " +
-            numOfRemainingGroups +
-            " group(s) containing " +
-            numOfRemainingStudents +
-            " students.";
+          
+          //If statement to deal with singular and plural cases
+          if (
+            numOfGroups - numOfRemainingGroups == 1 &&
+            (numOfRemainingGroups == 1) & (numOfStudents == 1)
+          ) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into 1 group containing 1 student and 1 group containing " +
+              numOfRemainingStudents +
+              " students.";
+          } else if (
+            numOfGroups - numOfRemainingGroups == 1 &&
+            numOfRemainingGroups == 1
+          ) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into 1 group containing " +
+              numOfStudents +
+              " students and 1 group containing " +
+              numOfRemainingStudents +
+              " students.";
+          } else if ((numOfRemainingGroups == 1) & (numOfStudents == 1)) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into " +
+              (numOfGroups - numOfRemainingGroups) +
+              " groups, each containing 1 student and 1 group containing " +
+              numOfRemainingStudents +
+              " students.";
+          } else {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into " +
+              (numOfGroups - numOfRemainingGroups) +
+              " groups, each containing " +
+              numOfStudents +
+              " students and " +
+              numOfRemainingGroups +
+              " groups, each containing " +
+              numOfRemainingStudents +
+              " students.";
+          }
         }
       }
       //Bottom radio button selected
