@@ -131,13 +131,28 @@ function divideClass() {
         numOfStudents = chosenClassArray.length / numOfGroups;
         document.getElementById("numStudentsInput").value = numOfStudents;
 
-        //Output back to user
-        classDivideFeedback.innerHTML =
-          "The class will be split into " +
-          numOfGroups +
-          " groups containing " +
-          numOfStudents +
-          " students.";
+        //Output back to user, if statement used for plural cases (e.g. numOfGroups == 1)
+        if (numOfGroups == 1 && numOfStudents == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into 1 group, containing 1 student.";
+        } else if (numOfGroups == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into 1 group, containing " +
+            numOfStudents +
+            " students.";
+        } else if (numOfStudents == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into " +
+            numOfGroups +
+            " groups, each containing 1 student.";
+        } else {
+          classDivideFeedback.innerHTML =
+            "The class will be split into " +
+            numOfGroups +
+            " groups, each containing " +
+            numOfStudents +
+            " students.";
+        }
 
         //Case when an equal number of students per group is impossible
       } else {
