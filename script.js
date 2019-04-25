@@ -178,7 +178,6 @@ function divideClass() {
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
-          
           //If statement to deal with singular and plural cases
           if (
             numOfGroups - numOfRemainingGroups == 1 &&
@@ -225,12 +224,28 @@ function divideClass() {
         numOfGroups = chosenClassArray.length / numOfStudents;
         document.getElementById("numGroupsInput").value = numOfGroups;
 
-        classDivideFeedback.innerHTML =
-          "The class will be split into " +
-          numOfGroups +
-          " groups, containing " +
-          numOfStudents +
-          " students.";
+        //Output back to user
+        if (numOfGroups == 1 && numOfStudents == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into 1 group, containing 1 student.";
+        } else if (numOfGroups == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into 1 group, containing " +
+            numOfStudents +
+            " students.";
+        } else if (numOfStudents == 1) {
+          classDivideFeedback.innerHTML =
+            "The class will be split into " +
+            numOfGroups +
+            " groups, each containing 1 student.";
+        } else {
+          classDivideFeedback.innerHTML =
+            "The class will be split into " +
+            numOfGroups +
+            " groups, each containing " +
+            numOfStudents +
+            " students.";
+        }
       } else {
         if (chosenClassArray.length < numOfStudents) {
           classDivideFeedback.innerHTML =
@@ -240,20 +255,43 @@ function divideClass() {
           numOfRemainingStudents = chosenClassArray.length % numOfStudents;
           numOfGroups = Math.ceil(chosenClassArray.length / numOfStudents);
 
+          //Output back to user
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
             numOfGroups +
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
-          classDivideFeedback.innerHTML +=
-            "The class can be split into " +
-            (numOfGroups - 1) +
-            " group(s) containing " +
-            numOfStudents +
-            " student(s) and 1 group containing " +
-            numOfRemainingStudents +
-            " students.";
+
+          if (numOfGroups - 1 == 1 && numOfRemainingStudents == 1) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into 1 group containing " +
+              numOfStudents +
+              " students and 1 group containing 1 student.";
+          } else if (numOfGroups - 1 == 1) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into 1 group containing " +
+              numOfStudents +
+              " students and 1 group containing " +
+              numOfRemainingStudents +
+              " students.";
+          } else if (numOfRemainingStudents == 1) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into " +
+              (numOfGroups - 1) +
+              " groups, each containing " +
+              numOfStudents +
+              " students and 1 group containing 1 student.";
+          } else {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into " +
+              (numOfGroups - 1) +
+              " groups, each containing " +
+              numOfStudents +
+              " students and 1 group containing " +
+              numOfRemainingStudents +
+              " students.";
+          }
         }
       }
     }
