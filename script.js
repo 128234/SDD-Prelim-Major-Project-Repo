@@ -56,7 +56,6 @@ function saveClass() {
     chosenClassArray = [];
     return;
   }
-
   for (r = 1; r < table.rows.length; r++) {
     studentDetailsObject = {
       firstName: table.rows[r].cells[0].childNodes[0].value,
@@ -67,8 +66,9 @@ function saveClass() {
     chosenClassArray.push(studentDetailsObject);
     //
   }
+  //These following functions will initialise the following page
   goToPage(page4);
-  createTable();
+  createTable("studentListTableDisplayP4");
   disableInputBox();
 }
 
@@ -77,6 +77,7 @@ function checkTableFilled(table) {
   checkFilled = true;
   for (r = 1; r < table.rows.length; r++) {
     for (c = 0; c < table.rows[r].cells.length; c++) {
+      //If the cell is empty, it will be highlighted red for the user to see
       if (table.rows[r].cells[c].childNodes[0].value == "") {
         table.rows[r].cells[c].style.backgroundColor = "red";
         checkFilled = false;
@@ -88,10 +89,10 @@ function checkTableFilled(table) {
   return checkFilled;
 }
 
-//PAGE4 - This will create a table to be display the students entered into the array
-function createTable() {
+//PAGE4 & PAGE5 - This will create a table to be display the students entered into the array
+function createTable(tableName) {
   for (i = 0; i < chosenClassArray.length; i++) {
-    row = document.getElementById("studentListTableDisplay").insertRow(-1);
+    row = document.getElementById(tableName).insertRow(-1);
     cell0 = row.insertCell(0);
     cell1 = row.insertCell(1);
     cell2 = row.insertCell(2);
@@ -325,6 +326,46 @@ function disableInputBox() {
   document.getElementById("numStudentsInput").value = "";
 }
 
+//PAGE5 - Will sort and divide class into groups determined by teacher
+function sortClass(method) {
+  switch(method) {
+  case 'sortAlphaLastname':
+    sortedArray = alphaSortClass('lastName')
+    break;
+  case 'sortAlphaFirstname':
+    sortedArray = alphaSortClass('firstName')
+    break;
+  case 'sortRank':
+    // code block
+    break;
+  case 'sortRandom':
+    // code block
+    break;
+}
+  
+  
+}
+
+//This will use an insertion sort to sort the class alphabetically either by firstname or lastname
+function alphaSortClass(name){
+  tempArray = chosenClassArray
+  first = 0
+  last = tempArray.length
+  positionOfNext = last-2
+  
+  while(positionOfNext>=first){
+    next = tempArray[positionOfNext][name]
+    current = positionOfNext
+    while(current<last && next.toLowerCase()>tempArray[current+1][name].toLowerCase()) {
+      current++
+      tempArray[current-1][name]=tempArray[current][name]
+    }
+    tempArray[current][name]= next
+    positionOfNext-=1
+  }
+return tempArray;
+}
+
 //Function to randomly group students - uses selection sort
 function randomiseArray(array) {
   arrRandomNumber = [];
@@ -346,3 +387,14 @@ function randomiseArray(array) {
   sortedArray.pop();
   return sortedArray;
 }
+/* STUFF TO DO
+- Check that group sorter is entered and then show button
+- Radio buttons on how to sort group (random, alphabetically, rank order (top with bottom, random for odd)
+
+- Display table back to user with lists.
+
+--------
+
+-Add functionality that saves classes to cloud/local storage
+- Back button on pages
+*/

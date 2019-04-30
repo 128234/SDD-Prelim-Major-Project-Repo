@@ -43,7 +43,7 @@
 <!--Page 4: Displays students in class and will preview group sizes-->
 <div id='page4' class='pages'>
   <h1>Group Generator - Page 4</h1>
-  <table id="studentListTableDisplay">
+  <table id="studentListTableDisplayP4">
     <tr>
       <th>Given Name</th>
       <th>Last Name</th>
@@ -58,15 +58,29 @@
     <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
   </form>
   <p id="classDivideFeedback"></p>
-  <button onclick="goToPage(page5)">Next Page</button>
+  <button onclick="goToPage(page5);createTable('studentListTableDisplayP5')">Next Page</button>
 </div>
 
 <!--Page 5: Options on how to sort class into groups-->
 <div id='page5' class='pages'>
   <h1>Group Generator - Page 5</h1>
+  <table id="studentListTableDisplayP5">
+    <tr>
+      <th>Given Name</th>
+      <th>Last Name</th>
+      <th>Rank</th>
+    </tr>
+  </table>
   
+  <p>Sort class:</p>
+  <input type="radio" name="sort" id="sortAlphaLastname" checked="checked"  onclick="sortClass('sortAlphaLastname')">Alphabetically by last name
+    <br>
+    <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by first name
+  <br>
+  <input type="radio" name="sort" id="sortRank" onclick="sortClass('sortRank')">By rank, grouping top and bottom ranking students together
+  <br>
+  <input type="radio" name="sort" id="sortRandom" onclick="sortClass('sortRandom')">By random
 </div>
-
 
       <script src="script.js"></script>
     </body>
