@@ -4,6 +4,14 @@ goToPage(page1);
 var allClassesArray = [];
 //This array is used to store the details of the students in the selected class
 var chosenClassArray = [];
+//The following variable stores details regarding the size of the groups
+var groupDetailsObject = {
+  equalGroups: true,
+  numGroupsA: 0,
+  numStudentsA: 0,
+  numGroupsB: 0,
+  numStudentsB: 0
+};
 
 //Every time a certain button is pressed, this code will switch from page to page.
 //It works by hiding all pages and showing the one selected.
@@ -125,12 +133,16 @@ function divideClass() {
     document.getElementById("numGroupsInput").value = "";
     document.getElementById("numStudentsInput").value = "";
   } else {
+    //When the button selected has a input value entered
     //Case when the top radio button has been selected
     if (isItByGroupsBtn == true) {
       //Case when an equal number of students per group is possible
       if (chosenClassArray.length % numOfGroups == 0) {
         numOfStudents = chosenClassArray.length / numOfGroups;
-        document.getElementById("numStudentsInput").value = numOfStudents;
+        //NOT NEEDED - document.getElementById("numStudentsInput").value = numOfStudents;
+
+        //This will assign to the global variable that equal groups are possible
+        groupDetailsObject.equalGroups = true;
 
         //Output back to user, if statement used for plural cases (e.g. numOfGroups == 1)
         if (numOfGroups == 1 && numOfStudents == 1) {
@@ -157,11 +169,12 @@ function divideClass() {
 
         //Case when an equal number of students per group is impossible
       } else {
+        //More groups than students case
         if (chosenClassArray.length < numOfGroups) {
           classDivideFeedback.innerHTML =
             "The values provided are unable to generate a group as there are more groups than students.";
         } else {
-          //Will split the class into as equal as possible groups
+          //The following code will split the class into as equal as possible groups
           numOfRemainingStudents = Math.ceil(
             chosenClassArray.length / numOfGroups
           );
@@ -170,45 +183,54 @@ function divideClass() {
             numOfStudents -= numOfRemainingStudents;
             numOfRemainingGroups += 1;
           }
-          numOfStudents = numOfStudents / (numOfGroups - numOfRemainingGroups);
+          numOfGroups = numOfGroups - numOfRemainingGroups;
+          numOfStudents = numOfStudents / numOfGroups;
+
+          //This will assign to the global variable that equal groups are impossible
+          groupDetailsObject.equalGroups = false;
 
           //Will display output back to user
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
-            numOfGroups +
+            (numOfGroups + numOfRemainingGroups) +
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
           //If statement to deal with singular and plural cases
           if (
-            numOfGroups - numOfRemainingGroups == 1 &&
-            (numOfRemainingGroups == 1) & (numOfStudents == 1)
+            numOfGroups == 1 &&
+            numOfRemainingGroups == 1 &&
+            numOfStudents == 1
           ) {
             classDivideFeedback.innerHTML +=
               "The class can be split into 1 group containing 1 student and 1 group containing " +
               numOfRemainingStudents +
               " students.";
-          } else if (
-            numOfGroups - numOfRemainingGroups == 1 &&
-            numOfRemainingGroups == 1
-          ) {
+          } else if (numOfGroups == 1 && numOfStudents == 1) {
+            classDivideFeedback.innerHTML +=
+              "The class can be split into 1 group containing 1 student and " +
+              numOfRemainingGroups +
+              " groups, each containing " +
+              numOfRemainingStudents +
+              " students.";
+          } else if (numOfGroups == 1 && numOfRemainingGroups == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into 1 group containing " +
               numOfStudents +
               " students and 1 group containing " +
               numOfRemainingStudents +
               " students.";
-          } else if ((numOfRemainingGroups == 1) & (numOfStudents == 1)) {
+          } else if (numOfRemainingGroups == 1 && numOfStudents == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into " +
-              (numOfGroups - numOfRemainingGroups) +
+              numOfGroups +
               " groups, each containing 1 student and 1 group containing " +
               numOfRemainingStudents +
               " students.";
           } else {
             classDivideFeedback.innerHTML +=
               "The class can be split into " +
-              (numOfGroups - numOfRemainingGroups) +
+              numOfGroups +
               " groups, each containing " +
               numOfStudents +
               " students and " +
@@ -221,9 +243,13 @@ function divideClass() {
       }
       //Bottom radio button selected
     } else if (isItByStudentsBtn == true) {
+      //Equal groups are possible
       if (chosenClassArray.length % numOfStudents == 0) {
         numOfGroups = chosenClassArray.length / numOfStudents;
-        document.getElementById("numGroupsInput").value = numOfGroups;
+        //NOT NEEDED - document.getElementById("numGroupsInput").value = numOfGroups;
+
+        //This will assign to the global variable that equal groups are possible
+        groupDetailsObject.equalGroups = true;
 
         //Output back to user
         if (numOfGroups == 1 && numOfStudents == 1) {
@@ -248,6 +274,7 @@ function divideClass() {
             " students.";
         }
       } else {
+        //Equal groups are impossible case
         if (chosenClassArray.length < numOfStudents) {
           classDivideFeedback.innerHTML =
             "The values provided are unable to generate a group as there are not enough students in the class.";
@@ -255,21 +282,26 @@ function divideClass() {
           //SPLIT INTO UNEQUAL GROUPS
           numOfRemainingStudents = chosenClassArray.length % numOfStudents;
           numOfGroups = Math.ceil(chosenClassArray.length / numOfStudents);
+          numOfRemainingGroups = 1;
+          numOfGroups -= 1
+
+          //This will assign to the global variable that equal groups are impossible
+          groupDetailsObject.equalGroups = false;
 
           //Output back to user
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
-            numOfGroups +
+            (numOfGroups+numOfRemainingGroups) +
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
 
-          if (numOfGroups - 1 == 1 && numOfRemainingStudents == 1) {
+          if (numOfGroups == 1 && numOfRemainingStudents == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into 1 group containing " +
               numOfStudents +
               " students and 1 group containing 1 student.";
-          } else if (numOfGroups - 1 == 1) {
+          } else if (numOfGroups == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into 1 group containing " +
               numOfStudents +
@@ -279,14 +311,14 @@ function divideClass() {
           } else if (numOfRemainingStudents == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into " +
-              (numOfGroups - 1) +
+              (numOfGroups) +
               " groups, each containing " +
               numOfStudents +
               " students and 1 group containing 1 student.";
           } else {
             classDivideFeedback.innerHTML +=
               "The class can be split into " +
-              (numOfGroups - 1) +
+              numOfGroups +
               " groups, each containing " +
               numOfStudents +
               " students and 1 group containing " +
@@ -296,6 +328,12 @@ function divideClass() {
         }
       }
     }
+    //GLOBAL VARIABLES FOR CLASSES TO ACCESS IN SORTCLASS FUNCTION
+    groupDetailsObject.numGroupsA = numOfGroups;
+    groupDetailsObject.numStudentsA = numOfStudents;
+    groupDetailsObject.numGroupsB = numOfRemainingGroups;
+    groupDetailsObject.numStudentsB = numOfRemainingStudents;
+    console.log(groupDetailsObject);
   }
   /**/
   //alert(byStudentsButton.checked.value)
@@ -328,42 +366,44 @@ function disableInputBox() {
 
 //PAGE5 - Will sort and divide class into groups determined by teacher
 function sortClass(method) {
-  switch(method) {
-  case 'sortAlphaLastname':
-    sortedArray = alphaSortClass('lastName')
-    break;
-  case 'sortAlphaFirstname':
-    sortedArray = alphaSortClass('firstName')
-    break;
-  case 'sortRank':
-    // code block
-    break;
-  case 'sortRandom':
-    // code block
-    break;
-}
-  
-  
+  switch (method) {
+    case "sortAlphaLastname":
+      sortedArray = alphaSortClass("lastName");
+      break;
+    case "sortAlphaFirstname":
+      sortedArray = alphaSortClass("firstName");
+      break;
+    case "sortRank":
+      // code block
+      break;
+    case "sortRandom":
+      // code block
+      break;
+  }
+  for (i = 0; i < sortedArray.length; i++) {}
 }
 
 //This will use an insertion sort to sort the class alphabetically either by firstname or lastname
-function alphaSortClass(name){
-  tempArray = chosenClassArray
-  first = 0
-  last = tempArray.length
-  positionOfNext = last-2
-  
-  while(positionOfNext>=first){
-    next = tempArray[positionOfNext][name]
-    current = positionOfNext
-    while(current<last && next.toLowerCase()>tempArray[current+1][name].toLowerCase()) {
-      current++
-      tempArray[current-1][name]=tempArray[current][name]
+function alphaSortClass(name) {
+  tempArray = chosenClassArray;
+  first = 0;
+  last = tempArray.length;
+  positionOfNext = last - 2;
+
+  while (positionOfNext >= first) {
+    next = tempArray[positionOfNext][name];
+    current = positionOfNext;
+    while (
+      current < last &&
+      next.toLowerCase() > tempArray[current + 1][name].toLowerCase()
+    ) {
+      current++;
+      tempArray[current - 1][name] = tempArray[current][name];
     }
-    tempArray[current][name]= next
-    positionOfNext-=1
+    tempArray[current][name] = next;
+    positionOfNext -= 1;
   }
-return tempArray;
+  return tempArray;
 }
 
 //Function to randomly group students - uses selection sort
