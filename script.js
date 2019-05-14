@@ -366,6 +366,7 @@ function disableInputBox() {
 
 //PAGE5 - Will sort and divide class into groups determined by teacher
 function sortClass(method) {
+  groupedClassArray = []
   switch (method) {
     case "sortAlphaLastname":
       sortedArray = alphaSortClass("lastName");
@@ -373,29 +374,48 @@ function sortClass(method) {
     case "sortAlphaFirstname":
       sortedArray = alphaSortClass("firstName");
       break;
-    case "sortRank":
-      // code block
+    case "sortRankMixed":
+      sortedArray = rankSortClass("mixed")
+      break;
+    case "sortRankOrdered":
+      sortedArray = rankSortClass("ordered")
       break;
     case "sortRandom":
-      // code block
+      sortedArray = randomSortClass()
       break;
   }
-  for (i = 0; i < sortedArray.length; i++) {}
+  //This section will split the sorted class into the designated groups
+  for (i = 0; i < groupDetailsObject.numGroupsA; i++) {
+    smallGroupArray = []
+    for(x=0;x<groupDetailsObject.numStudentsA;x++){
+      smallGroupArray.push(sortedArray[x+(i*groupDetailsObject.numStudentsA)])
+    }
+    groupedClassArray.push(smallGroupArray)
+  } 
+   for (j = 0; j < groupDetailsObject.numGroupsB; j++) {
+    smallGroupArray = []
+    for(x=0;x<groupDetailsObject.numStudentsB;x++){
+      smallGroupArray.push(sortedArray[x+((i*groupDetailsObject.numStudentsA)+(j*groupDetailsObject.numStudentsB))])
+    }
+    groupedClassArray.push(smallGroupArray)
+  } 
+  console.log(groupedClassArray)
+  
 }
 
 //This will use an insertion sort to sort the class alphabetically either by firstname or lastname
 function alphaSortClass(name) {
   tempArray = chosenClassArray;
   first = 0;
-  last = tempArray.length;
-  positionOfNext = last - 2;
+  last = tempArray.length-1;
+  positionOfNext = last - 1;
 
   while (positionOfNext >= first) {
     next = tempArray[positionOfNext][name];
     current = positionOfNext;
     while (
       current < last &&
-      next.toLowerCase() > tempArray[current + 1][name].toLowerCase()
+      next.toLowerCase() > (tempArray[current + 1][name]).toLowerCase()
     ) {
       current++;
       tempArray[current - 1][name] = tempArray[current][name];
@@ -406,27 +426,72 @@ function alphaSortClass(name) {
   return tempArray;
 }
 
-//Function to randomly group students - uses selection sort
-function randomiseArray(array) {
+//Function to sort class by each student's rank
+function rankSortClass(method) {
+  tempArray = chosenClassArray;
+  first = 0;
+  last = tempArray.length-1;
+  positionOfNext = last - 1;
+
+  //This will sort the array so that the it is in order from highest ranking to lowest ranking
+  while (positionOfNext >= first) {
+    next = Number(tempArray[positionOfNext].rank);
+    current = positionOfNext;
+    while (
+      current < last &&
+      next > Number(tempArray[current + 1].rank)
+    ) {
+      current++;
+      tempArray[current - 1].rank = tempArray[current].rank;
+    }
+    tempArray[current].rank = next;
+    positionOfNext -= 1;
+  }
+  //This will sort the array so that it will be a mixed class
+  if(method == "mixed"){
+    halfArrayLength = Math.ceil(tempArray.length/2)
+    endOfTempArray = tempArray.slice(halfArrayLength)
+    endOfTempArray.reverse()
+    tempArray = tempArray.slice(0,halfArrayLength)
+
+  for(i=0;i<endOfTempArray.length;i++){
+    tempArray.splice(2*i+1,0,endOfTempArray[i])
+  }   
+     }
+  
+  return tempArray;
+}
+
+//Function to randomly group students - uses insertion sort
+function randomSortClass() {
+  tempArray = chosenClassArray;
   arrRandomNumber = [];
-  sortArray = array.reverse();
-  sortedArray = [];
-  for (i = 0; i < array.length; i++) {
+
+  for (i = 0; i < tempArray.length; i++) {
     arrRandomNumber.push(Math.random());
   }
-  while (sortedArray.length <= array.length) {
-    max = 0;
-    for (i = 0; i < arrRandomNumber.length; i++) {
-      if (arrRandomNumber[i] > arrRandomNumber[max]) {
-        max = i;
-      }
+  first = 0;
+  last = tempArray.length-1;
+  positionOfNext = last - 1;
+
+  while (positionOfNext >= first) {
+    next = arrRandomNumber[positionOfNext];
+    storedValue = tempArray[positionOfNext]
+    current = positionOfNext;
+    while (current < last && next > arrRandomNumber[current + 1]) {
+      current++;
+      arrRandomNumber[current - 1] = arrRandomNumber[current];
+      tempArray[current - 1] = tempArray[current];
     }
-    sortedArray.push(array[max]);
-    arrRandomNumber[max] = 0;
+    arrRandomNumber[current] = next;
+    tempArray[current] = storedValue
+    positionOfNext -= 1;
   }
-  sortedArray.pop();
-  return sortedArray;
+  return tempArray;
 }
+
+
+
 /* STUFF TO DO
 - Check that group sorter is entered and then show button
 - Radio buttons on how to sort group (random, alphabetically, rank order (top with bottom, random for odd)

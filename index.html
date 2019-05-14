@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <!--Page 1: Title Page-->
+ <!--Page 1: Title Page-->
 <div id='page1' class='pages'>
   <h1>Group Generator</h1>
   <button onclick="goToPage(page2)">Begin</button>
@@ -77,7 +77,9 @@
     <br>
     <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by first name
   <br>
-  <input type="radio" name="sort" id="sortRank" onclick="sortClass('sortRank')">By rank, grouping top and bottom ranking students together
+  <input type="radio" name="sort" id="sortRankMixed" onclick="sortClass('sortRankMixed')">By rank, grouping top and bottom ranking students together
+  <br>
+  <input type="radio" name="sort" id="sortRankOrdered" onclick="sortClass('sortRankOrdered')">By rank, grouping students together who have similar ranks
   <br>
   <input type="radio" name="sort" id="sortRandom" onclick="sortClass('sortRandom')">By random
 </div>
