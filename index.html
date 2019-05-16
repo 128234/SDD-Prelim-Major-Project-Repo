@@ -53,12 +53,12 @@
 
   <p>How would you like to sort your class?</p>
   <form action="">
-    <input type="radio" name="groups" id="byGroupsBtn" checked="checked"  onclick="disableInputBox()"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
+    <input type="radio" name="groups" id="byGroupsBtn" checked="checked" onclick="disableInputBox()"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
     <br>
     <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
   </form>
   <p id="classDivideFeedback"></p>
-  <button onclick="goToPage(page5);createTable('studentListTableDisplayP5')">Next Page</button>
+  <button onclick="goToPage(page5);createTable('studentListTableDisplayP5');sortClass('sortAlphaLastname')">Next Page</button>
 </div>
 
 <!--Page 5: Options on how to sort class into groups-->
@@ -71,17 +71,28 @@
       <th>Rank</th>
     </tr>
   </table>
-  
+
   <p>Sort class:</p>
-  <input type="radio" name="sort" id="sortAlphaLastname" checked="checked"  onclick="sortClass('sortAlphaLastname')">Alphabetically by last name
-    <br>
-    <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by first name
+  <input type="radio" name="sort" id="sortAlphaLastname" checked="checked" onclick="sortClass('sortAlphaLastname')">Alphabetically by last name
+  <br>
+  <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by first name
   <br>
   <input type="radio" name="sort" id="sortRankMixed" onclick="sortClass('sortRankMixed')">By rank, grouping top and bottom ranking students together
   <br>
   <input type="radio" name="sort" id="sortRankOrdered" onclick="sortClass('sortRankOrdered')">By rank, grouping students together who have similar ranks
   <br>
   <input type="radio" name="sort" id="sortRandom" onclick="sortClass('sortRandom')">By random
+
+  <br>
+  <br>
+  <table id="sortedStudentListTableP5" display="none">
+    <tr>
+      <th>Group Number</th>
+      <th>Given Name</th>
+      <th>Last Name</th>
+      <th>Rank</th>
+    </tr>
+  </table>
 </div>
 
       <script src="script.js"></script>

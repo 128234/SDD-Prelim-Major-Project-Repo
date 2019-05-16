@@ -283,7 +283,7 @@ function divideClass() {
           numOfRemainingStudents = chosenClassArray.length % numOfStudents;
           numOfGroups = Math.ceil(chosenClassArray.length / numOfStudents);
           numOfRemainingGroups = 1;
-          numOfGroups -= 1
+          numOfGroups -= 1;
 
           //This will assign to the global variable that equal groups are impossible
           groupDetailsObject.equalGroups = false;
@@ -291,7 +291,7 @@ function divideClass() {
           //Output back to user
           classDivideFeedback.innerHTML =
             "Due to the parameters entered, the class cannot be equally distributed into " +
-            (numOfGroups+numOfRemainingGroups) +
+            (numOfGroups + numOfRemainingGroups) +
             " groups. <br/>" +
             "Here is a possible alternative: " +
             "<br/>";
@@ -311,7 +311,7 @@ function divideClass() {
           } else if (numOfRemainingStudents == 1) {
             classDivideFeedback.innerHTML +=
               "The class can be split into " +
-              (numOfGroups) +
+              numOfGroups +
               " groups, each containing " +
               numOfStudents +
               " students and 1 group containing 1 student.";
@@ -366,7 +366,7 @@ function disableInputBox() {
 
 //PAGE5 - Will sort and divide class into groups determined by teacher
 function sortClass(method) {
-  groupedClassArray = []
+  groupedClassArray = [];
   switch (method) {
     case "sortAlphaLastname":
       sortedArray = alphaSortClass("lastName");
@@ -375,52 +375,79 @@ function sortClass(method) {
       sortedArray = alphaSortClass("firstName");
       break;
     case "sortRankMixed":
-      sortedArray = rankSortClass("mixed")
+      sortedArray = rankSortClass("mixed");
       break;
     case "sortRankOrdered":
-      sortedArray = rankSortClass("ordered")
+      sortedArray = rankSortClass("ordered");
       break;
     case "sortRandom":
-      sortedArray = randomSortClass()
+      sortedArray = randomSortClass();
       break;
   }
   //This section will split the sorted class into the designated groups
   for (i = 0; i < groupDetailsObject.numGroupsA; i++) {
-    smallGroupArray = []
-    for(x=0;x<groupDetailsObject.numStudentsA;x++){
-      smallGroupArray.push(sortedArray[x+(i*groupDetailsObject.numStudentsA)])
+    smallGroupArray = [];
+    for (x = 0; x < groupDetailsObject.numStudentsA; x++) {
+      smallGroupArray.push(
+        sortedArray[x + i * groupDetailsObject.numStudentsA]
+      );
     }
-    groupedClassArray.push(smallGroupArray)
-  } 
-   for (j = 0; j < groupDetailsObject.numGroupsB; j++) {
-    smallGroupArray = []
-    for(x=0;x<groupDetailsObject.numStudentsB;x++){
-      smallGroupArray.push(sortedArray[x+((i*groupDetailsObject.numStudentsA)+(j*groupDetailsObject.numStudentsB))])
+    groupedClassArray.push(smallGroupArray);
+  }
+  for (j = 0; j < groupDetailsObject.numGroupsB; j++) {
+    smallGroupArray = [];
+    for (x = 0; x < groupDetailsObject.numStudentsB; x++) {
+      smallGroupArray.push(
+        sortedArray[
+          x +
+            (i * groupDetailsObject.numStudentsA +
+              j * groupDetailsObject.numStudentsB)
+        ]
+      );
     }
-    groupedClassArray.push(smallGroupArray)
-  } 
-  console.log(groupedClassArray)
-  
+    groupedClassArray.push(smallGroupArray);
+  }
+
+  console.log(groupedClassArray);
+
+  ///COMMENTS FOR THIS SECTION - WORKS
+  sortedStudentListTableP5.style.display = "block";
+  while (document.getElementById("sortedStudentListTableP5").rows.length > 1) {
+    document.getElementById("sortedStudentListTableP5").deleteRow(-1);
+  }
+  for (i = 0; i < groupedClassArray.length; i++) {
+    for (j = 0; j < groupedClassArray[i].length; j++) {
+      row = document.getElementById("sortedStudentListTableP5").insertRow(-1);
+      cell0 = row.insertCell(0);
+      cell1 = row.insertCell(1);
+      cell2 = row.insertCell(2);
+      cell3 = row.insertCell(3);
+      cell0.innerHTML = i + 1;
+      cell1.innerHTML = groupedClassArray[i][j].firstName;
+      cell2.innerHTML = groupedClassArray[i][j].lastName;
+      cell3.innerHTML = groupedClassArray[i][j].rank;
+    }
+  }
 }
 
 //This will use an insertion sort to sort the class alphabetically either by firstname or lastname
 function alphaSortClass(name) {
   tempArray = chosenClassArray;
   first = 0;
-  last = tempArray.length-1;
+  last = tempArray.length - 1;
   positionOfNext = last - 1;
 
   while (positionOfNext >= first) {
-    next = tempArray[positionOfNext][name];
+    next = tempArray[positionOfNext];
     current = positionOfNext;
     while (
       current < last &&
-      next.toLowerCase() > (tempArray[current + 1][name]).toLowerCase()
+      next[name].toLowerCase() > tempArray[current + 1][name].toLowerCase()
     ) {
       current++;
-      tempArray[current - 1][name] = tempArray[current][name];
+      tempArray[current - 1] = tempArray[current];
     }
-    tempArray[current][name] = next;
+    tempArray[current] = next;
     positionOfNext -= 1;
   }
   return tempArray;
@@ -430,35 +457,35 @@ function alphaSortClass(name) {
 function rankSortClass(method) {
   tempArray = chosenClassArray;
   first = 0;
-  last = tempArray.length-1;
+  last = tempArray.length - 1;
   positionOfNext = last - 1;
 
   //This will sort the array so that the it is in order from highest ranking to lowest ranking
   while (positionOfNext >= first) {
-    next = Number(tempArray[positionOfNext].rank);
+    next = tempArray[positionOfNext];
     current = positionOfNext;
     while (
       current < last &&
-      next > Number(tempArray[current + 1].rank)
+      Number(next.rank) > Number(tempArray[current + 1].rank)
     ) {
       current++;
-      tempArray[current - 1].rank = tempArray[current].rank;
+      tempArray[current - 1] = tempArray[current];
     }
-    tempArray[current].rank = next;
+    tempArray[current] = next;
     positionOfNext -= 1;
   }
   //This will sort the array so that it will be a mixed class
-  if(method == "mixed"){
-    halfArrayLength = Math.ceil(tempArray.length/2)
-    endOfTempArray = tempArray.slice(halfArrayLength)
-    endOfTempArray.reverse()
-    tempArray = tempArray.slice(0,halfArrayLength)
+  if (method == "mixed") {
+    halfArrayLength = Math.ceil(tempArray.length / 2);
+    endOfTempArray = tempArray.slice(halfArrayLength);
+    endOfTempArray.reverse();
+    tempArray = tempArray.slice(0, halfArrayLength);
 
-  for(i=0;i<endOfTempArray.length;i++){
-    tempArray.splice(2*i+1,0,endOfTempArray[i])
-  }   
-     }
-  
+    for (i = 0; i < endOfTempArray.length; i++) {
+      tempArray.splice(2 * i + 1, 0, endOfTempArray[i]);
+    }
+  }
+
   return tempArray;
 }
 
@@ -471,12 +498,12 @@ function randomSortClass() {
     arrRandomNumber.push(Math.random());
   }
   first = 0;
-  last = tempArray.length-1;
+  last = tempArray.length - 1;
   positionOfNext = last - 1;
 
   while (positionOfNext >= first) {
     next = arrRandomNumber[positionOfNext];
-    storedValue = tempArray[positionOfNext]
+    storedValue = tempArray[positionOfNext];
     current = positionOfNext;
     while (current < last && next > arrRandomNumber[current + 1]) {
       current++;
@@ -484,13 +511,11 @@ function randomSortClass() {
       tempArray[current - 1] = tempArray[current];
     }
     arrRandomNumber[current] = next;
-    tempArray[current] = storedValue
+    tempArray[current] = storedValue;
     positionOfNext -= 1;
   }
   return tempArray;
 }
-
-
 
 /* STUFF TO DO
 - Check that group sorter is entered and then show button
