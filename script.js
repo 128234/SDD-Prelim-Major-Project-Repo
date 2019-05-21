@@ -385,32 +385,30 @@ function sortClass(method) {
       break;
   }
   //This section will split the sorted class into the designated groups
-  for (i = 0; i < groupDetailsObject.numGroupsA; i++) {
+  for (i = 0; i < groupDetailsObject.numGroupsB; i++) {
     smallGroupArray = [];
-    for (x = 0; x < groupDetailsObject.numStudentsA; x++) {
+    for (x = 0; x < groupDetailsObject.numStudentsB; x++) {
       smallGroupArray.push(
-        sortedArray[x + i * groupDetailsObject.numStudentsA]
+        sortedArray[x + i * groupDetailsObject.numStudentsB]
       );
     }
     groupedClassArray.push(smallGroupArray);
   }
-  for (j = 0; j < groupDetailsObject.numGroupsB; j++) {
+  for (j = 0; j < groupDetailsObject.numGroupsA; j++) {
     smallGroupArray = [];
-    for (x = 0; x < groupDetailsObject.numStudentsB; x++) {
+    for (x = 0; x < groupDetailsObject.numStudentsA; x++) {
       smallGroupArray.push(
         sortedArray[
           x +
-            (i * groupDetailsObject.numStudentsA +
-              j * groupDetailsObject.numStudentsB)
+            (i * groupDetailsObject.numStudentsB + j * groupDetailsObject.numStudentsA)
         ]
       );
     }
     groupedClassArray.push(smallGroupArray);
   }
-
   console.log(groupedClassArray);
 
-  ///COMMENTS FOR THIS SECTION - WORKS
+  //This section will display the table back to the user
   sortedStudentListTableP5.style.display = "block";
   while (document.getElementById("sortedStudentListTableP5").rows.length > 1) {
     document.getElementById("sortedStudentListTableP5").deleteRow(-1);
