@@ -27,6 +27,7 @@ function goToPage(page) {
 //var studentID = -1; //useless at the moment
 function addNewStudent() {
   //studentID += 1; //useless
+
   //Creates a new row and splits it into 3 cells
   row = document.getElementById("studentListTable").insertRow(-1);
   cell0 = row.insertCell(0);
@@ -48,22 +49,30 @@ function addNewStudent() {
 }
 
 //This function deletes the last row of the input table
-function removeLastStudent() {
-  if (document.getElementById("studentListTable").rows.length > 2) {
-    document.getElementById("studentListTable").deleteRow(-1);
+function removeLastStudent(table) {
+  if (document.getElementById(table).rows.length > 2) {
+    document.getElementById(table).deleteRow(-1);
+  } else if (document.getElementById(table).rows.length == 2) {
+    //Will clear the value in the top cell and make cell white
+    for (i = 0; i < 3; i++) {
+      document.getElementById(table).rows[1].cells[i].childNodes[0].value = "";
+      document.getElementById(table).rows[1].cells[i].style.backgroundColor =
+        "white";
+    }
   }
 }
 
 //PAGE3 - This function will save the list of students that the user entered into an array
 function saveClass() {
+  chosenClassArray = [];
   table = document.getElementById("studentListTable");
   //Iterates through the table and appends value in the cell to an object
   isFilled = checkTableFilled(table);
   if (!isFilled) {
-    alert("Please fill all cells");
-    chosenClassArray = [];
+    alert("Please fill all cells will correct values");
     return;
   }
+
   for (r = 1; r < table.rows.length; r++) {
     studentDetailsObject = {
       firstName: table.rows[r].cells[0].childNodes[0].value,
@@ -83,10 +92,18 @@ function saveClass() {
 //PAGE3 - Used in the saveClass function to check if all cells are entered
 function checkTableFilled(table) {
   checkFilled = true;
+  //Loop will iterate through each cell to determined if it filled or not
   for (r = 1; r < table.rows.length; r++) {
     for (c = 0; c < table.rows[r].cells.length; c++) {
       //If the cell is empty, it will be highlighted red for the user to see
       if (table.rows[r].cells[c].childNodes[0].value == "") {
+        table.rows[r].cells[c].style.backgroundColor = "red";
+        checkFilled = false;
+      } else if (
+        c == 2 &&
+        !Number.isInteger(Number(table.rows[r].cells[c].childNodes[0].value))
+      ) {
+        //Checks if rank is an integer
         table.rows[r].cells[c].style.backgroundColor = "red";
         checkFilled = false;
       } else {
@@ -99,6 +116,11 @@ function checkTableFilled(table) {
 
 //PAGE4 & PAGE5 - This will create a table to be display the students entered into the array
 function createTable(tableName) {
+  //This will clear all existing values in the table
+  while (document.getElementById(tableName).rows.length > 1) {
+    document.getElementById(tableName).deleteRow(-1);
+  }
+
   for (i = 0; i < chosenClassArray.length; i++) {
     row = document.getElementById(tableName).insertRow(-1);
     cell0 = row.insertCell(0);
@@ -112,14 +134,13 @@ function createTable(tableName) {
 
 //PAGE4 - This will split the class into the groups assigned by the user
 function divideClass() {
-  //Booleans to show which radio button is selected
+  //DEFINING VARIABLES:
+  //Booleans to show which radio button is selected - jQuery
   isItByGroupsBtn = $("#byGroupsBtn").prop("checked");
   isItByStudentsBtn = $("#byStudentsBtn").prop("checked");
-
   //Number of groups and number of students in each group
   numOfGroups = Number(document.getElementById("numGroupsInput").value);
   numOfStudents = Number(document.getElementById("numStudentsInput").value);
-
   //Used when unequal groups are formed
   numOfRemainingStudents = 0;
   numOfRemainingGroups = 0;
@@ -132,6 +153,9 @@ function divideClass() {
     classDivideFeedback.innerHTML = "";
     document.getElementById("numGroupsInput").value = "";
     document.getElementById("numStudentsInput").value = "";
+
+    //Hide save button
+    document.getElementById("page4SaveBtn").style.display = "none";
   } else {
     //When the button selected has a input value entered
     //Case when the top radio button has been selected
@@ -166,6 +190,8 @@ function divideClass() {
             numOfStudents +
             " students.";
         }
+        //Show save button
+        document.getElementById("page4SaveBtn").style.display = "inline";
 
         //Case when an equal number of students per group is impossible
       } else {
@@ -239,6 +265,8 @@ function divideClass() {
               numOfRemainingStudents +
               " students.";
           }
+          //Show save button
+          document.getElementById("page4SaveBtn").style.display = "inline";
         }
       }
       //Bottom radio button selected
@@ -273,6 +301,8 @@ function divideClass() {
             numOfStudents +
             " students.";
         }
+        //Show save button
+        document.getElementById("page4SaveBtn").style.display = "inline";
       } else {
         //Equal groups are impossible case
         if (chosenClassArray.length < numOfStudents) {
@@ -325,6 +355,8 @@ function divideClass() {
               numOfRemainingStudents +
               " students.";
           }
+          //Show save button
+          document.getElementById("page4SaveBtn").style.display = "inline";
         }
       }
     }
@@ -367,6 +399,7 @@ function disableInputBox() {
 //PAGE5 - Will sort and divide class into groups determined by teacher
 function sortClass(method) {
   groupedClassArray = [];
+  //This switch statement will determine which type of sort will be run
   switch (method) {
     case "sortAlphaLastname":
       sortedArray = alphaSortClass("lastName");
@@ -400,7 +433,8 @@ function sortClass(method) {
       smallGroupArray.push(
         sortedArray[
           x +
-            (i * groupDetailsObject.numStudentsB + j * groupDetailsObject.numStudentsA)
+            (i * groupDetailsObject.numStudentsB +
+              j * groupDetailsObject.numStudentsA)
         ]
       );
     }
