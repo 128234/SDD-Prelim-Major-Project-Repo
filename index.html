@@ -24,6 +24,7 @@
 <!--Page 3: Enter students' details page-->
 <div id='page3' class='pages'>
   <h1>Group Generator - Page 3</h1>
+  <p> Enter Class Name: <input id="classNameInput" type="text"></p>
 
   <table id="studentListTable">
     <tr>
@@ -92,7 +93,7 @@
 
   <br>
   <br>
-  <table id="sortedStudentListTableP5" display="none">
+  <table id="sortedStudentListTableP5">
     <tr>
       <th>Group Number</th>
       <th>Given Name</th>
@@ -100,6 +101,10 @@
       <th>Rank</th>
     </tr>
   </table>
+
+  <button onclick="goToPage(page4)">Back</button>
+  <button onclick="saveSession()">Save Groups</button>
+
 </div>
 
       <script src="script.js"></script>

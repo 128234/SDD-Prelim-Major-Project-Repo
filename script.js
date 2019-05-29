@@ -1,3 +1,4 @@
+//DO LOCAL STORAGE AND BINARY SEARCH
 //This will first go to page 1
 goToPage(page1);
 //This array contains all class arrays
@@ -13,6 +14,9 @@ var groupDetailsObject = {
   numStudentsB: 0
 };
 
+//This is a temporary variable to store the class name and variable
+var tempClassStore = [];
+
 //Every time a certain button is pressed, this code will switch from page to page.
 //It works by hiding all pages and showing the one selected.
 function goToPage(page) {
@@ -21,6 +25,22 @@ function goToPage(page) {
     pages[i].style.display = "none";
   }
   page.style.display = "block";
+}
+
+//Function TO CHECK THAT NAME ENTERED IS UNIQUE
+function checkClassName() {
+  isNameUnique = true;
+  if (classNameInput.value === "") {
+    isNameUnique = false;
+  } else {
+    for (i = 0; i < allClassesArray.length; i++) {
+      if (allClassesArray[i].name == classNameInput.value) {
+        isNameUnique = false;
+        break;
+      }
+    }
+  }
+  return isNameUnique;
 }
 
 //PAGE3 - This function will add a new row to the table for the user to enter
@@ -64,6 +84,13 @@ function removeLastStudent(table) {
 
 //PAGE3 - This function will save the list of students that the user entered into an array
 function saveClass() {
+  //This function will give the entered class a name and check whether it is unique or not
+  isNameUnique = checkClassName();
+  if (!isNameUnique) {
+    alert("This name has already been taken. Please enter a new name.");
+    return;
+  }
+
   chosenClassArray = [];
   table = document.getElementById("studentListTable");
   //Iterates through the table and appends value in the cell to an object
@@ -81,8 +108,15 @@ function saveClass() {
     };
     //The object is pushed into the class array
     chosenClassArray.push(studentDetailsObject);
-    //
   }
+
+  //This variable will save the class to an array
+  var classObject = {
+    name: classNameInput.value,
+    class: chosenClassArray
+  };
+  tempClassStore[0] = classObject;
+
   //These following functions will initialise the following page
   goToPage(page4);
   createTable("studentListTableDisplayP4");
@@ -365,7 +399,6 @@ function divideClass() {
     groupDetailsObject.numStudentsA = numOfStudents;
     groupDetailsObject.numGroupsB = numOfRemainingGroups;
     groupDetailsObject.numStudentsB = numOfRemainingStudents;
-    console.log(groupDetailsObject);
   }
   /**/
   //alert(byStudentsButton.checked.value)
@@ -440,7 +473,6 @@ function sortClass(method) {
     }
     groupedClassArray.push(smallGroupArray);
   }
-  console.log(groupedClassArray);
 
   //This section will display the table back to the user
   sortedStudentListTableP5.style.display = "block";
@@ -549,14 +581,21 @@ function randomSortClass() {
   return tempArray;
 }
 
-/* STUFF TO DO
-- Check that group sorter is entered and then show button
-- Radio buttons on how to sort group (random, alphabetically, rank order (top with bottom, random for odd)
+//Will save class and go back to beginning
+function saveSession() {
+  allClassesArray.push(tempClassStore[0]);
 
-- Display table back to user with lists.
+  //This will clear all existing values in the table
+  while (document.getElementById("studentListTable").rows.length > 2) {
+    document.getElementById("studentListTable").deleteRow(-1);
+  }
+  for (i = 0; i < 3; i++) {
+    document.getElementById("studentListTable").rows[1].cells[
+      i
+    ].childNodes[0].value =
+      "";
+  }
+  document.getElementById("classNameInput").value = "";
 
---------
-
--Add functionality that saves classes to cloud/local storage
-- Back button on pages
-*/
+  goToPage(page2);
+}
