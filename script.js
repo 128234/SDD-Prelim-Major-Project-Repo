@@ -1,8 +1,10 @@
-//Binary Search Done - just need local storage
 //This will first go to page 1
 goToPage(page1);
 //This array contains all class arrays
-var allClassesArray = [];
+var allClassesArray = JSON.parse(localStorage.getItem("allClassesArray"))
+if (allClassesArray == null) {
+      var allClassesArray = [];
+    }
 //This array is used to store the details of the students in the selected class
 var chosenClassArray = [];
 //The following variable stores details regarding the size of the groups
@@ -710,6 +712,7 @@ function randomSortClass() {
 //Will save class and go back to beginning
 function saveSession() {
   allClassesArray.push(tempClassStore[0]);
+  localStorage.setItem("allClassesArray", JSON.stringify(allClassesArray))
 
   //This will clear all existing values in the table
   while (document.getElementById("studentListTable").rows.length > 2) {
