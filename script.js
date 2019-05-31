@@ -1,4 +1,4 @@
-//DO LOCAL STORAGE AND BINARY SEARCH
+//Binary Search Done - just need local storage
 //This will first go to page 1
 goToPage(page1);
 //This array contains all class arrays
@@ -13,7 +13,6 @@ var groupDetailsObject = {
   numGroupsB: 0,
   numStudentsB: 0
 };
-
 //This is a temporary variable to store the class name and variable
 var tempClassStore = [];
 
@@ -27,20 +26,134 @@ function goToPage(page) {
   page.style.display = "block";
 }
 
+function clearInputTable() {
+  while (document.getElementById("studentListTable").rows.length > 2) {
+    document.getElementById("studentListTable").deleteRow(-1);
+  }
+
+  //Will clear the value in the top cell and make cell white
+  for (i = 0; i < 3; i++) {
+    document.getElementById("studentListTable").rows[1].cells[
+      i
+    ].childNodes[0].value =
+      "";
+    document.getElementById("studentListTable").rows[1].cells[
+      i
+    ].style.backgroundColor =
+      "white";
+  }
+
+  classNameInput.value = "";
+  goToPage(page3);
+}
+
+//This function will load already saved classes
+function loadClass() {
+  bubbleSort();
+  index = binarySearch();
+
+  if (index === false) {
+    alert("This class was not found in our database. Please try again.");
+    return;
+  }
+  findClassNameInput.value = "";
+  while (document.getElementById("studentListTable").rows.length > 1) {
+    document.getElementById("studentListTable").deleteRow(-1);
+  }
+  for (i = 0; i < allClassesArray[index].class.length; i++) {
+    row = document.getElementById("studentListTable").insertRow(-1);
+    cell0 = row.insertCell(0);
+    cell1 = row.insertCell(1);
+    cell2 = row.insertCell(2);
+    inputElement0 = document.createElement("input");
+    inputElement1 = document.createElement("input");
+    inputElement2 = document.createElement("input");
+    cell0.appendChild(inputElement0);
+    cell1.appendChild(inputElement1);
+    cell2.appendChild(inputElement2);
+    cell0.childNodes[0].value = allClassesArray[index].class[i].firstName;
+    cell1.childNodes[0].value = allClassesArray[index].class[i].lastName;
+    cell2.childNodes[0].value = allClassesArray[index].class[i].rank;
+  }
+  classNameInput.value = allClassesArray[index].name;
+  goToPage(page3);
+}
+
+function bubbleSort() {
+  //The following lines display the insertion sort algorithm which sorts the array
+  tempArray = allClassesArray;
+  first = 0;
+  last = tempArray.length - 1;
+  positionOfNext = last - 1;
+
+  while (positionOfNext >= first) {
+    next = tempArray[positionOfNext];
+    current = positionOfNext;
+    while (
+      current < last &&
+      next.name.toLowerCase() > tempArray[current + 1].name.toLowerCase()
+    ) {
+      current++;
+      tempArray[current - 1] = tempArray[current];
+    }
+    tempArray[current] = next;
+    positionOfNext -= 1;
+  }
+  allClassesArray = tempArray;
+  return;
+}
+
+function binarySearch() {
+  lower = 0;
+  upper = allClassesArray.length - 1;
+  foundIt = false;
+  requiredName = findClassNameInput.value;
+
+  //This will iterate through the array until it has found the value it is looking for
+  do {
+    middle = Math.floor((upper + lower) / 2);
+
+    //If the value is not located in the middle, it will split the remaining array into 2 halves and will repeat the same process
+    if (
+      requiredName.toLowerCase() == allClassesArray[middle].name.toLowerCase()
+    ) {
+      foundIt = true;
+      positionFound = middle + 1;
+    } else if (
+      requiredName.toLowerCase() < allClassesArray[middle].name.toLowerCase()
+    ) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
+  } while (!foundIt && lower <= upper);
+
+  //This will display its position back to the user
+  if (foundIt) {
+    return positionFound - 1;
+  } else {
+    return false;
+    return;
+  }
+}
+
 //Function TO CHECK THAT NAME ENTERED IS UNIQUE
 function checkClassName() {
-  isNameUnique = true;
+  isNameUnique = "true";
   if (classNameInput.value === "") {
-    isNameUnique = false;
+    isNameUnique = "blank";
   } else {
     for (i = 0; i < allClassesArray.length; i++) {
-      if (allClassesArray[i].name == classNameInput.value) {
-        isNameUnique = false;
+      if (
+        allClassesArray[i].name.toLowerCase() ==
+        classNameInput.value.toLowerCase()
+      ) {
+        isNameUnique = "false";
         break;
       }
     }
   }
-  return isNameUnique;
+  return [isNameUnique, i];
 }
 
 //PAGE3 - This function will add a new row to the table for the user to enter
@@ -85,10 +198,23 @@ function removeLastStudent(table) {
 //PAGE3 - This function will save the list of students that the user entered into an array
 function saveClass() {
   //This function will give the entered class a name and check whether it is unique or not
-  isNameUnique = checkClassName();
-  if (!isNameUnique) {
-    alert("This name has already been taken. Please enter a new name.");
-    return;
+  isNameUniqueArray = checkClassName();
+  switch (isNameUniqueArray[0]) {
+    case "blank":
+      alert("Please enter a name for your class");
+      return;
+      break;
+    case "false":
+      if (
+        !confirm(
+          "A class with this name already exists. Continuing will override this class."
+        )
+      ) {
+        return;
+        break;
+      } else {
+        allClassesArray.splice(isNameUniqueArray[1], 1);
+      }
   }
 
   chosenClassArray = [];

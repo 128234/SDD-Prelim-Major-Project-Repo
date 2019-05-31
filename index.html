@@ -17,8 +17,9 @@
 <!--Page 2: Access existing classes or add new class-->
 <div id='page2' class='pages'>
   <h1>Group Generator - Page 2</h1>
-  <button onclick="goToPage(page3)">+Add new group</button>
-  <p>Existing Groups</p>
+  <button onclick="clearInputTable()">+Add new group</button>
+  <p>Search Existing Group: <input id="findClassNameInput" type="text"></p>
+  <button onclick="loadClass()">Load</button>
 </div>
 
 <!--Page 3: Enter students' details page-->
