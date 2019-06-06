@@ -5,26 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Group Generator</title>
+    <link rel="shortcut icon" href="http://www.iconarchive.com/download/i108931/google/noto-emoji-people-profession/10207-man-student-light-skin-tone.ico" type="image/x-icon"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
  <!--Page 1: Title Page-->
 <div id='page1' class='pages'>
-  <h1>Group Generator</h1>
-  <button onclick="goToPage(page2)">Begin</button>
+  <h1 class="cover-heading">Group Generator</h1>
+  <button class="btn btn-lg btn-default" onclick="goToPage(page2)">Begin</button>
 </div>
 
 <!--Page 2: Access existing classes or add new class-->
 <div id='page2' class='pages'>
-  <h1>Group Generator - Page 2</h1>
+  <h1>Group Generator</h1>
   <button onclick="clearInputTable()">+Add new group</button>
-  <p>Search Existing Group: <input id="findClassNameInput" type="text"></p>
-  <button onclick="loadClass()">Load</button>
+  <br>
+  <br>
+  <p>Search Existing Group: <input id="findClassNameInput" type="text"><button onclick="loadClass()">Load</button></p>
+  
 </div>
 
 <!--Page 3: Enter students' details page-->
 <div id='page3' class='pages'>
-  <h1>Group Generator - Page 3</h1>
+  <h1>Group Generator</h1>
   <p> Enter Class Name: <input id="classNameInput" type="text"></p>
 
   <table id="studentListTable">
@@ -49,7 +54,7 @@
 
 <!--Page 4: Displays students in class and will preview group sizes-->
 <div id='page4' class='pages'>
-  <h1>Group Generator - Page 4</h1>
+  <h1>Group Generator</h1>
   <table id="studentListTableDisplayP4">
     <tr>
       <th>Given Name</th>
@@ -72,7 +77,7 @@
 
 <!--Page 5: Options on how to sort class into groups-->
 <div id='page5' class='pages'>
-  <h1>Group Generator - Page 5</h1>
+  <h1>Group Generator</h1>
   <table id="studentListTableDisplayP5">
     <tr>
       <th>Given Name</th>

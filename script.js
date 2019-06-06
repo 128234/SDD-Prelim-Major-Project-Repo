@@ -603,7 +603,7 @@ function sortClass(method) {
   }
 
   //This section will display the table back to the user
-  sortedStudentListTableP5.style.display = "block";
+  sortedStudentListTableP5.style.display = "table";
   while (document.getElementById("sortedStudentListTableP5").rows.length > 1) {
     document.getElementById("sortedStudentListTableP5").deleteRow(-1);
   }
