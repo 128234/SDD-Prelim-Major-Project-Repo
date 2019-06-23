@@ -69,9 +69,9 @@
 
   <p>How would you like to sort your class?</p>
   <form action="">
-    <input type="radio" name="groups" id="byGroupsBtn" checked="checked" onclick="disableInputBox()"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
+    <input type="radio" name="groups" id="byGroupsBtn" checked="checked" onclick="disableInputBox()" class="form-check-input"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
     <br>
-    <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
+    <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()" class="form-check-input"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
   </form>
   <p id="classDivideFeedback"></p>
   <button class="btn btn-outline-secondary" onclick="goToPage(page3);">Back</button>
