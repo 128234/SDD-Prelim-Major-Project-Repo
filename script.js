@@ -593,9 +593,9 @@ function sortClass(method) {
     for (x = 0; x < groupDetailsObject.numStudentsA; x++) {
       smallGroupArray.push(
         sortedArray[
-          x +
-            (i * groupDetailsObject.numStudentsB +
-              j * groupDetailsObject.numStudentsA)
+        x +
+        (i * groupDetailsObject.numStudentsB +
+          j * groupDetailsObject.numStudentsA)
         ]
       );
     }
@@ -727,4 +727,21 @@ function saveSession() {
   document.getElementById("classNameInput").value = "";
 
   goToPage(page2);
+}
+
+
+function displaySavedClasses() {
+  for (i = 0; i < allClassesArray.length; i++) {
+    while (document.getElementById("displaySavedClassesTable").rows.length > 0) {
+      document.getElementById("displaySavedClassesTable").deleteRow(-1);
+    }
+
+    for (i = 0; i < allClassesArray.length; i++) {
+      row = document.getElementById("displaySavedClassesTable").insertRow(-1);
+      cell0 = row.insertCell(0);
+      cell1 = row.insertCell(1);
+      cell0.innerHTML = allClassesArray[i].name;
+      cell1.innerHTML = chosenClassArray[i].lastName;
+    }
+  }
 }
