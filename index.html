@@ -1,122 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Group Generator</title>
-    <link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Group Generator</title>
+  <link rel="shortcut icon" href="icon.ico" type="image/x-icon" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<!--Page 1: Title Page-->
-<div id='page1' class='pages'>
-  <h1 class="cover-heading">Group Generator</h1>
-  <button class="btn btn-outline-secondary" onclick="goToPage(page2)">Begin</button>
-</div>
+  <!--Page 1: Title Page-->
+  <div id='page1' class='pages'>
+    <h1 class="cover-heading">Group Generator</h1>
+    <button class="btn btn-outline-secondary" onclick="goToPage(page2)">Begin</button>
+  </div>
 
-<!--Page 2: Access existing classes or add new class-->
-<div id='page2' class='pages'>
-  <h1>Group Generator</h1>
-  <button onclick="clearInputTable()" class="btn btn-outline-secondary">+Add new group</button>
-  <br>
-  <br>
-  <p>Search Existing Group: <input id="findClassNameInput" type="text"><button onclick="loadClass()" class="btn btn-outline-secondary">Load</button></p>
+  <!--Page 2: Access existing classes or add new class-->
+  <div id='page2' class='pages'>
+    <h1>Group Generator</h1>
+    <button onclick="clearInputTable()" class="btn btn-outline-secondary">+Add new group</button>
+    <br>
+    <br>
+    <p>Search Existing Group: <input id="findClassNameInput" type="text"><button onclick="loadClass()"
+        class="btn btn-outline-secondary">Load</button></p>
+    <br>
+    <button onclick="displaySavedClasses()">Display All Saved Classes</button>
+    <br>
+    <table class="table table-bordered" id="displaySavedClassesTable">
+    </table>
 
-</div>
+  </div>
 
-<!--Page 3: Enter students' details page-->
-<div id='page3' class='pages'>
-  <h1>Group Generator</h1>
-  <p> Enter Class Name: <input id="classNameInput" type="text"></p>
+  <!--Page 3: Enter students' details page-->
+  <div id='page3' class='pages'>
+    <h1>Group Generator</h1>
+    <p> Enter Class Name: <input id="classNameInput" type="text"></p>
 
-  <table class="table table-condensed table-hover" id="studentListTable">
-    <thead>
+    <table class="table table-condensed table-hover" id="studentListTable">
+      <thead>
+        <tr>
+          <th>Given Name</th>
+          <th>Last Name</th>
+          <th>Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="addNewStudent()" class="btn btn-outline-secondary">+Add new student</button>
+    <button onclick="removeLastStudent('studentListTable')" class="btn btn-outline-secondary">Remove last student
+    </button>
+    <br>
+    <br>
+    <button onclick="goToPage(page2);" class="btn btn-outline-secondary">Back</button>
+    <button onclick="saveClass();" class="btn btn-outline-secondary">Save</button>
+  </div>
+
+  <!--Page 4: Displays students in class and will preview group sizes-->
+  <div id='page4' class='pages'>
+    <h1>Group Generator</h1>
+    <table class="table table-bordered" id="studentListTableDisplayP4">
       <tr>
         <th>Given Name</th>
         <th>Last Name</th>
         <th>Rank</th>
       </tr>
-    </thead>
-    <tbody>
+    </table>
+
+    <p>How would you like to sort your class?</p>
+    <form action="">
+      <input type="radio" name="groups" id="byGroupsBtn" checked="checked" onclick="disableInputBox()"
+        class="form-check-input"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()"
+          id="numGroupsInput"> equal groups</label>
+      <br>
+      <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()" class="form-check-input"><label
+        id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()"
+          id="numStudentsInput"> members</label>
+    </form>
+    <p id="classDivideFeedback"></p>
+    <button class="btn btn-outline-secondary" onclick="goToPage(page3);">Back</button>
+    <button class="btn btn-outline-secondary" style="display: none;" id="page4SaveBtn"
+      onclick="goToPage(page5);createTable('studentListTableDisplayP5');sortClass('sortAlphaLastname')">Next
+      Page</button>
+
+  </div>
+
+  <!--Page 5: Options on how to sort class into groups-->
+  <div id='page5' class='pages'>
+    <h1>Group Generator</h1>
+    <table class="table table-bordered" id="studentListTableDisplayP5">
       <tr>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
+        <th>Given Name</th>
+        <th>Last Name</th>
+        <th>Rank</th>
       </tr>
-    </tbody>
-  </table>
-  <button onclick="addNewStudent()" class="btn btn-outline-secondary">+Add new student</button>
-  <button onclick="removeLastStudent('studentListTable')" class="btn btn-outline-secondary">Remove last student </button>
-  <br>
-  <br>
-  <button onclick="goToPage(page2);" class="btn btn-outline-secondary">Back</button>
-  <button onclick="saveClass();" class="btn btn-outline-secondary">Save</button>
-</div>
+    </table>
 
-<!--Page 4: Displays students in class and will preview group sizes-->
-<div id='page4' class='pages'>
-  <h1>Group Generator</h1>
-  <table class="table table-bordered" id="studentListTableDisplayP4">
-    <tr>
-      <th>Given Name</th>
-      <th>Last Name</th>
-      <th>Rank</th>
-    </tr>
-  </table>
-
-  <p>How would you like to sort your class?</p>
-  <form action="">
-    <input type="radio" name="groups" id="byGroupsBtn" checked="checked" onclick="disableInputBox()" class="form-check-input"><label id="byGroupsLabel">Sort class into <input type="text" oninput="divideClass()" id="numGroupsInput"> equal groups</label>
+    <p>Sort class:</p>
+    <input type="radio" name="sort" id="sortAlphaLastname" checked="checked"
+      onclick="sortClass('sortAlphaLastname')">Alphabetically by last name
     <br>
-    <input type="radio" name="groups" id="byStudentsBtn" onclick="disableInputBox()" class="form-check-input"><label id="byStudentsLabel">Sort class into groups with <input type="text" oninput="divideClass()" id="numStudentsInput"> members</label>
-  </form>
-  <p id="classDivideFeedback"></p>
-  <button class="btn btn-outline-secondary" onclick="goToPage(page3);">Back</button>
-  <button class="btn btn-outline-secondary" style="display: none;" id="page4SaveBtn" onclick="goToPage(page5);createTable('studentListTableDisplayP5');sortClass('sortAlphaLastname')">Next Page</button>
+    <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by
+    first name
+    <br>
+    <input type="radio" name="sort" id="sortRankMixed" onclick="sortClass('sortRankMixed')">By rank, grouping top and
+    bottom ranking students together
+    <br>
+    <input type="radio" name="sort" id="sortRankOrdered" onclick="sortClass('sortRankOrdered')">By rank, grouping
+    students together who have similar ranks
+    <br>
+    <input type="radio" name="sort" id="sortRandom" onclick="sortClass('sortRandom')">By random
 
-</div>
+    <br>
+    <br>
+    <table class="table table-bordered" id="sortedStudentListTableP5">
+      <tr>
+        <th>Group Number</th>
+        <th>Given Name</th>
+        <th>Last Name</th>
+        <th>Rank</th>
+      </tr>
+    </table>
 
-<!--Page 5: Options on how to sort class into groups-->
-<div id='page5' class='pages'>
-  <h1>Group Generator</h1>
-  <table class="table table-bordered" id="studentListTableDisplayP5">
-    <tr>
-      <th>Given Name</th>
-      <th>Last Name</th>
-      <th>Rank</th>
-    </tr>
-  </table>
+    <button onclick="goToPage(page4)" class="btn btn-outline-secondary">Back</button>
+    <button onclick="saveSession()" class="btn btn-outline-secondary">Save Class</button>
 
-  <p>Sort class:</p>
-  <input type="radio" name="sort" id="sortAlphaLastname" checked="checked" onclick="sortClass('sortAlphaLastname')">Alphabetically by last name
-  <br>
-  <input type="radio" name="sort" id="sortAlphaFirstname" onclick="sortClass('sortAlphaFirstname')">Alphabetically by first name
-  <br>
-  <input type="radio" name="sort" id="sortRankMixed" onclick="sortClass('sortRankMixed')">By rank, grouping top and bottom ranking students together
-  <br>
-  <input type="radio" name="sort" id="sortRankOrdered" onclick="sortClass('sortRankOrdered')">By rank, grouping students together who have similar ranks
-  <br>
-  <input type="radio" name="sort" id="sortRandom" onclick="sortClass('sortRandom')">By random
+  </div>
 
-  <br>
-  <br>
-  <table class="table table-bordered" id="sortedStudentListTableP5">
-    <tr>
-      <th>Group Number</th>
-      <th>Given Name</th>
-      <th>Last Name</th>
-      <th>Rank</th>
-    </tr>
-  </table>
+  <script src="script.js"></script>
+</body>
 
-  <button onclick="goToPage(page4)" class="btn btn-outline-secondary">Back</button>
-  <button onclick="saveSession()" class="btn btn-outline-secondary">Save Groups</button>
-
-</div>
-
-      <script src="script.js"></script>
-    </body>
 </html>
